@@ -3,8 +3,8 @@ var ClozeCard = require("./ClozeCard");
 var inquirer = require("inquirer");
 // var fs = require("fs");
 
-var basicArray = [];
-var clozeArray = [];
+// var basicDeck = [];
+// var clozeDeck = [];
 
 function makeBasicCard() {
 
@@ -18,7 +18,7 @@ function makeBasicCard() {
 		message: "Please enter the answer for the back side of your flashcard."
 	}]).then(function(answer) {
 		var newBasicCard = new BasicCard(answer.front, answer.back);
-		
+		this.
 
 	})
 

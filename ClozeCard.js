@@ -1,11 +1,11 @@
 var ClozeCard = function(text, cloze) {
-	this.clozeArray = [];
+	this.clozeDeck = [];
 	this.text = text;
 	this.cloze = cloze;
 	this.question = text.replace(cloze, " ... ");
 
 	this.addClozeCard = function(t, c) {
-		this.clozeArray.push(new ClozeCard);
+		this.clozeDeck.push(new ClozeCard);
 	}
 };
 
