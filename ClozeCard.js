@@ -1,19 +1,11 @@
-var BasicCard = require("./BasicCards.js");
-
-var BasicCardsArary = [];
-var ClozeCardsArray = [];
-
 var ClozeCard = function(text, cloze) {
+	this.clozeArray = [];
 	this.text = text;
 	this.cloze = cloze;
+	this.question = text.replace(cloze, " ... ");
 
 	this.addClozeCard = function(t, c) {
-		this.ClozeCardsArray.push(new ClozeCard);
-	}
-	var f = text;
-	var b = cloze;
-	this.addBasicCard = function(f, b) {
-		this.BasicCardsArary.push(new BasicCard(f, b));
+		this.clozeArray.push(new ClozeCard);
 	}
 };
 
