@@ -1,1 +1,1 @@
-{"text":"Gromit is Wallace's dog.","cloze":"Gromit"}{"text":"George Washington was the first president of the USA.","cloze":"George Washington"}{"text":"Gromit is Wallace's dog.","cloze":"Gromit"}
+{"text":"Gromit is Wallace's dog.","cloze":"Gromit"}{"text":"George Washington was the first president of the USA.","cloze":"George Washington"}

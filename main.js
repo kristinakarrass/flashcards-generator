@@ -8,6 +8,25 @@ var fs = require("fs");
 var basicDeck = [];
 var clozeDeck = [];
 
+
+function playGame() {
+    inquirer.prompt([
+    {
+        type: "list",
+        name: "game",
+        message: "Would you like to see flashcards or play a game with cloze cards?",
+        choices: ["Flashcard Game", "Cloze Card Game"]
+    }
+        ]).then(function(answer) {
+            if (answer.game === "Flashcard Game") {
+                
+            } else {
+                
+             }
+        })
+    };
+    playGame();
+
 function makeBasicCard() {
 
     inquirer.prompt([{
@@ -54,4 +73,4 @@ function makeClozeCard() {
 };
 
 // makeBasicCard();
-makeClozeCard();
+// makeClozeCard();
