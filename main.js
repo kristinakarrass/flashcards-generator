@@ -20,7 +20,7 @@ function playBasicCards() {
             name: "question",
             message: basicDeck[count].front
         }]).then(function(answer) {
-            if (answer.question === basicDeck[count].back) {
+            if (answer.question.toLowerCase() === basicDeck[count].back) {
                 console.log("You are right!");
                 win++;
             } else {
@@ -48,7 +48,7 @@ function playClozeCards() {
             name: "question",
             message: clozeDeck[count].question
         }]).then(function(answer) {
-            if (answer.question === clozeDeck[count].cloze) {
+            if (answer.question.toLowerCase() === clozeDeck[count].cloze) {
                 console.log("You are right!");
                 win++;
             } else {
