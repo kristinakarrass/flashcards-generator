@@ -83,7 +83,6 @@ function playGame() {
                 var newBasicCard = new BasicCard(basicCards[i].front, basicCards[i].back);
                 basicDeck.push(newBasicCard);
             }
-            console.log(basicDeck);
             playBasicCards();
         } else if (answer.game === "Cloze Card Game") {
             //user wants to play with cloze cards
@@ -118,16 +117,17 @@ function makeBasicCards() {
             var newBasicCard = new BasicCard(answer.front, answer.back);
             // push cards into basicDeck Array
             basicDeck.push(newBasicCard);
-            // fs.appendFile("basicDeck.json", JSON.stringify(answer) + ",", function(err) {
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            // });
+            fs.appendFile("basicDeck.json", JSON.stringify(answer) + "\n", function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
             count++;
             makeBasicCards();
         })
 
     } else {
+        console.log("Let's give your cards a trial run!");
         count = 0;
         playBasicCards();
     }
@@ -147,25 +147,28 @@ function makeClozeCards() {
             name: "cloze",
             message: "Enter the key word you would like to take out of the sentence."
         }]).then(function(answer) {
-            //check if cloze is part of the sentence, if not, prompt user for correct imput
+
             var text = answer.text;
             var cloze = answer.cloze.trim();
-            // if (text.indexOf(cloze) === -1) {
-            //     console.log("Your key word is not valid! Please re-enter your cloze card text and cloze.");
+
+            //check if cloze is part of the sentence, if not, prompt user for correct input         
+            if (text.indexOf(cloze) === -1) {
+                console.log("Your key word is not valid! Please re-enter your cloze card text and cloze.");
                 
-            //     makeClozeCards();               
-            // }
+            } else {
             var newClozeCard = new ClozeCard(text, cloze);
-            fs.appendFile("clozeDeck.json", JSON.stringify(answer) + ",", function(err) {
+            fs.appendFile("clozeDeck.json", JSON.stringify(answer) + "\n", function(err) {
                 if (err) {
                     console.log(err);
                 }
             });
             clozeDeck.push(newClozeCard);
             count++;
+        }
             makeClozeCards();
         })
     } else {
+        console.log("Let's give your cards a trial run!");
         count = 0;
         playClozeCards();
     }
@@ -173,6 +176,12 @@ function makeClozeCards() {
 
 //start game
 playGame();
+
+
+
+
+
+
 // playClozeJSON();
 function playClozeJSON() {
     fs.readFile("clozeDeck.json", "utf8", function(error, data) {
