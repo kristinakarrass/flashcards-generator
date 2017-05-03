@@ -20,7 +20,7 @@ function playBasicCards() {
             name: "question",
             message: basicDeck[count].front
         }]).then(function(answer) {
-            if (answer.question.toLowerCase() === basicDeck[count].back) {
+            if (answer.question.toLowerCase().trim() === basicDeck[count].back.toLowerCase()) {
                 console.log("You are right!");
                 win++;
             } else {
@@ -48,7 +48,7 @@ function playClozeCards() {
             name: "question",
             message: clozeDeck[count].question
         }]).then(function(answer) {
-            if (answer.question.toLowerCase() === clozeDeck[count].cloze) {
+            if (answer.question.toLowerCase().trim() === clozeDeck[count].cloze.toLowerCase()) {
                 console.log("You are right!");
                 win++;
             } else {
@@ -147,13 +147,20 @@ function makeClozeCards() {
             name: "cloze",
             message: "Enter the key word you would like to take out of the sentence."
         }]).then(function(answer) {
-            // console.log(answer);
-            var newClozeCard = new ClozeCard(answer.text, answer.cloze);
-            // fs.appendFile("clozeDeck.json", JSON.stringify(answer) + ",", function(err) {
-            //     if (!err) {
-            //         console.log("working");
-            //     }
-            // });
+            //check if cloze is part of the sentence, if not, prompt user for correct imput
+            var text = answer.text;
+            var cloze = answer.cloze.trim();
+            // if (text.indexOf(cloze) === -1) {
+            //     console.log("Your key word is not valid! Please re-enter your cloze card text and cloze.");
+                
+            //     makeClozeCards();               
+            // }
+            var newClozeCard = new ClozeCard(text, cloze);
+            fs.appendFile("clozeDeck.json", JSON.stringify(answer) + ",", function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
             clozeDeck.push(newClozeCard);
             count++;
             makeClozeCards();
@@ -166,4 +173,43 @@ function makeClozeCards() {
 
 //start game
 playGame();
+// playClozeJSON();
+function playClozeJSON() {
+    fs.readFile("clozeDeck.json", "utf8", function(error, data) {
 
+  // We will then print the contents of data
+  console.log(data);
+
+  // Then split it by commas (to make it more readable)
+  var dataArr = data?JSON.parse(data):[];
+
+  // We will then re-display the content as an array for later use.
+  console.log(dataArr);
+
+});
+
+    //play with cloze cards
+    if (count < clozeDeck.length) {
+        inquirer.prompt([{
+            type: "input",
+            name: "question",
+            message: clozeDeck[count].question
+        }]).then(function(answer) {
+            if (answer.question.toLowerCase().trim() === clozeDeck[count].cloze.toLowerCase()) {
+                console.log("You are right!");
+                win++;
+            } else {
+                console.log("Sorry, the right answer was " + clozeDeck[count].cloze);
+                loss++;
+            }
+            count++;
+            playClozeCards();
+        });
+    } else {
+        console.log("You got " + win + " of the answers right and " + loss + " wrong.");
+        //reset stats
+        count = 0;
+        win = 0;
+        loss = 0;
+    }
+}
