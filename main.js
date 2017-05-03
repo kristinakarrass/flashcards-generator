@@ -64,7 +64,6 @@ function playClozeCards() {
         count = 0;
         win = 0;
         loss = 0;
-        // clozeDeck = [];
     }
 }
 
@@ -97,16 +96,16 @@ function playGame() {
         } else if (answer.game === "Create Flashcards and Play") {
             makeBasicCards();
         } else {
-
+            makeClozeCards();
         }
     })
 };
 
 
 function makeBasicCards() {
-    console.log("New Basic Card");
     //get user input for basic cards
-    if (count < 2) {
+    if (count < 5) {
+    console.log("New Basic Card");    
         inquirer.prompt([{
             type: "input",
             name: "front",
@@ -135,11 +134,10 @@ function makeBasicCards() {
 };
 
 
-function makeClozeCard() {
-
+function makeClozeCards() {
+    //get user input for cloze cards
     if (count < 5) {
         console.log("New cloze card:");
-
         inquirer.prompt([{
             type: "input",
             name: "text",
@@ -151,19 +149,18 @@ function makeClozeCard() {
         }]).then(function(answer) {
             // console.log(answer);
             var newClozeCard = new ClozeCard(answer.text, answer.cloze);
-            fs.appendFile("clozeDeck.json", JSON.stringify(answer) + ",", function(err) {
-                if (!err) {
-                    console.log("working");
-                }
-            });
+            // fs.appendFile("clozeDeck.json", JSON.stringify(answer) + ",", function(err) {
+            //     if (!err) {
+            //         console.log("working");
+            //     }
+            // });
             clozeDeck.push(newClozeCard);
             count++;
-            makeClozeCard();
+            makeClozeCards();
         })
     } else {
-        for (var i = 0; i < clozeDeck.length; i++) {
-
-        };
+        count = 0;
+        playClozeCards();
     }
 };
 
