@@ -1,7 +1,5 @@
-//stringify answer!!!
 
 var BasicCard = require("./BasicCards.js");
-var basicDeck = require("./BasicCards.js");
 var ClozeCard = require("./ClozeCard");
 var inquirer = require("inquirer");
 var fs = require("fs");
@@ -11,10 +9,10 @@ var clozeDeck = [];
 var win = 0;
 var loss = 0;
 var basicCards = [{ front: "What shape has six sides?", back: "hexagon" }, { front: "What shape has four equal sides?", back: "square" }, { front: "What shape has seven sides?", back: "heptagon" }, { front: "What shape three sides?", back: "triangle" }];
-var clozeCards = [{ text: "A hexagon has six sides.", back: "six" }, { text: "A square has four equal sides.", back: "four" }, { text: "A heptagon has seven sides.", back: "seven" }, { text: "A triangle has three sides.", back: "three" }];
+var clozeCards = [{ text: "A hexagon has six sides.", cloze: "six" }, { text: "A square has four equal sides.", cloze: "four" }, { text: "A heptagon has seven sides.", cloze: "seven" }, { text: "A triangle has three sides.", cloze: "three" }];
 var count = 0;
 
-function playBasicCards() {
+function playBasicCards(basicDeck) {
     //play with basic cards
     if (count < basicDeck.length) {
         inquirer.prompt([{
@@ -38,6 +36,7 @@ function playBasicCards() {
         count = 0;
         win = 0;
         loss = 0;
+        basicDeck = [];
     }
 }
 
@@ -49,11 +48,11 @@ function playClozeCards() {
             name: "question",
             message: clozeDeck[count].question
         }]).then(function(answer) {
-            if (answer.question === clozeDeck[count].back) {
+            if (answer.question === clozeDeck[count].cloze) {
                 console.log("You are right!");
                 win++;
             } else {
-                console.log("Sorry, the right answer was " + clozeDeck[count].back);
+                console.log("Sorry, the right answer was " + clozeDeck[count].cloze);
                 loss++;
             }
             count++;
@@ -65,6 +64,7 @@ function playClozeCards() {
         count = 0;
         win = 0;
         loss = 0;
+        // clozeDeck = [];
     }
 }
 
@@ -73,9 +73,10 @@ function playGame() {
     inquirer.prompt([{
         type: "list",
         name: "game",
-        message: "Would you like to see flashcards or play a game with cloze cards?",
-        choices: ["Flashcard Game", "Cloze Card Game"]
+        message: "What would you like to do?",
+        choices: ["Flashcard Game", "Cloze Card Game", "Create Flashcards and Play", "Create Cloze Cards and Play"]
     }]).then(function(answer) {
+        console.log(answer.game);
         //user wants to play with flashcards
         if (answer.game === "Flashcard Game") {
             //create cards in basicDeck Array
@@ -83,42 +84,54 @@ function playGame() {
                 var newBasicCard = new BasicCard(basicCards[i].front, basicCards[i].back);
                 basicDeck.push(newBasicCard);
             }
+            console.log(basicDeck);
             playBasicCards();
-        } else {
+        } else if (answer.game === "Cloze Card Game") {
             //user wants to play with cloze cards
             for (var i = 0; i < clozeCards.length; i++) {
-                var newClozeCard = new ClozeCard(clozeCards[i].front, clozeCards[i].back);
+                var newClozeCard = new ClozeCard(clozeCards[i].text, clozeCards[i].cloze);
                 clozeDeck.push(newClozeCard);
             }
             playClozeCards();
+
+        } else if (answer.game === "Create Flashcards and Play") {
+            makeBasicCards();
+        } else {
 
         }
     })
 };
 playGame();
 
-function makeBasicCard() {
+function makeBasicCards() {
+    console.log("New Basic Card");
+    //get user input for basic cards
+    if (count < 2) {
+        inquirer.prompt([{
+            type: "input",
+            name: "front",
+            message: "Please enter the question for the front side of your flashcard."
+        }, {
+            type: "input",
+            name: "back",
+            message: "Please enter the answer for the back side of your flashcard."
+        }]).then(function(answer) {
+            var newBasicCard = new BasicCard(answer.front, answer.back);
+            // push cards into basicDeck Array
+            basicDeck.push(newBasicCard);
+            // fs.appendFile("basicDeck.json", JSON.stringify(answer) + ",", function(err) {
+            //     if (err) {
+            //         console.log(err);
+            //     }
+            // });
+            count++;
+            makeBasicCards();
+        })
 
-    inquirer.prompt([{
-        type: "input",
-        name: "front",
-        message: "Please enter the question for the front side of your flashcard."
-    }, {
-        type: "input",
-        name: "back",
-        message: "Please enter the answer for the back side of your flashcard."
-    }]).then(function(answer) {
-        var newBasicCard = new BasicCard(answer.front, answer.back);
-        // console.log(newBasicCard);
-        basicDeck.push(newBasicCard);
-        console.log(basicDeck);
-        fs.appendFile("basicDeck.json", JSON.stringify(answer) + ",", function(err) {
-            if (!err) {
-                console.log("working");
-            }
-        });
-    })
-
+    } else {
+        count = 0;
+        playBasicCards(basicDeck);
+    }
 };
 
 
