@@ -12,7 +12,7 @@ var basicCards = [{ front: "What shape has six sides?", back: "hexagon" }, { fro
 var clozeCards = [{ text: "A hexagon has six sides.", cloze: "six" }, { text: "A square has four equal sides.", cloze: "four" }, { text: "A heptagon has seven sides.", cloze: "seven" }, { text: "A triangle has three sides.", cloze: "three" }];
 var count = 0;
 
-function playBasicCards(basicDeck) {
+function playBasicCards() {
     //play with basic cards
     if (count < basicDeck.length) {
         inquirer.prompt([{
@@ -36,7 +36,7 @@ function playBasicCards(basicDeck) {
         count = 0;
         win = 0;
         loss = 0;
-        basicDeck = [];
+        // basicDeck = [];
     }
 }
 
@@ -101,7 +101,7 @@ function playGame() {
         }
     })
 };
-playGame();
+
 
 function makeBasicCards() {
     console.log("New Basic Card");
@@ -130,7 +130,7 @@ function makeBasicCards() {
 
     } else {
         count = 0;
-        playBasicCards(basicDeck);
+        playBasicCards();
     }
 };
 
@@ -167,5 +167,6 @@ function makeClozeCard() {
     }
 };
 
-// makeBasicCard();
-// makeClozeCard();
+//start game
+playGame();
+
