@@ -1,1 +1,0 @@
-{"front":"What is the name of Wallace's dog?","back":"Gromit"}

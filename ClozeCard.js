@@ -1,12 +1,9 @@
+//contructor for cloze cards that has full text, cloze and partial text as values
 var ClozeCard = function(text, cloze) {
 	this.clozeDeck = [];
 	this.text = text;
 	this.cloze = cloze;
 	this.question = text.replace(cloze, " ... ");
-
-	this.addClozeCard = function(t, c) {
-		this.clozeDeck.push(new ClozeCard);
-	}
 };
 
 
