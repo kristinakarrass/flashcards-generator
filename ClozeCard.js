@@ -8,7 +8,7 @@ function ClozeCard(text, cloze) {
             if (text.indexOf(cloze) === -1) {
                 console.log("Error! Cloze is not part of your input!");
             } else {
-                text.replace(cloze, " ... ");
+                return this.question = text.replace(cloze, " ... ");
             }
         }
     } else {

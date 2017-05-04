@@ -1,4 +1,3 @@
-
 var BasicCard = require("./BasicCards.js");
 var ClozeCard = require("./ClozeCard");
 var inquirer = require("inquirer");
@@ -104,7 +103,7 @@ function playGame() {
 function makeBasicCards() {
     //get user input for basic cards
     if (count < 5) {
-    console.log("New Basic Card");    
+        console.log("New Basic Card");
         inquirer.prompt([{
             type: "input",
             name: "front",
@@ -127,16 +126,29 @@ function makeBasicCards() {
         })
 
     } else {
-        console.log("Let's give your cards a trial run!");
-        count = 0;
-        playBasicCards();
+        //ask if they want to play with their new deck
+        inquirer.prompt([{
+            name: "question",
+            type: "confirm",
+            message: "Would you like to play with your cards?"
+        }]).then(function(answer) {
+            if (answer.question) {
+                //let them play their cards
+                console.log("Let's give your cards a trial run!");
+                count = 0;
+                playBasicCards();
+            } else {
+                console.log("Have a great rest of your day!");
+                return;
+            }
+        });
     }
 };
 
 
 function makeClozeCards() {
-    //get user input for cloze cards
-    if (count < 5) {
+    //get user input for cloze cards (in this case five)
+    if (count < 2) {
         console.log("New cloze card:");
         inquirer.prompt([{
             type: "input",
@@ -154,23 +166,37 @@ function makeClozeCards() {
             //check if cloze is part of the sentence, if not, prompt user for correct input         
             if (text.indexOf(cloze) === -1) {
                 console.log("Your key word is not valid! Please re-enter your cloze card text and cloze.");
-                
+
             } else {
-            var newClozeCard = new ClozeCard(text, cloze);
-            fs.appendFile("clozeDeck.json", JSON.stringify(answer) + "\n", function(err) {
-                if (err) {
-                    console.log(err);
-                }
-            });
-            clozeDeck.push(newClozeCard);
-            count++;
-        }
+                var newClozeCard = new ClozeCard(text, cloze);
+                fs.appendFile("clozeDeck.json", JSON.stringify(answer) + "\n", function(err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+                clozeDeck.push(newClozeCard);
+                count++;
+            }
             makeClozeCards();
         })
     } else {
-        console.log("Let's give your cards a trial run!");
-        count = 0;
-        playClozeCards();
+        //ask if they want to play with their new deck
+        inquirer.prompt([{
+            name: "question",
+            type: "confirm",
+            message: "Would you like to play with your cards?"
+        }]).then(function(answer) {
+            if (answer.question) {
+                //let them play their cards
+                console.log("Let's give your cards a trial run!");
+                count = 0;
+                playClozeCards();
+            } else {
+                console.log("Enjoy the rest of your day!");
+                return;
+            }
+        });
+
     }
 };
 
@@ -186,16 +212,16 @@ playGame();
 function playClozeJSON() {
     fs.readFile("clozeDeck.json", "utf8", function(error, data) {
 
-  // We will then print the contents of data
-  console.log(data);
+        // We will then print the contents of data
+        console.log(data);
 
-  // Then split it by commas (to make it more readable)
-  var dataArr = data?JSON.parse(data):[];
+        // Then split it by commas (to make it more readable)
+        var dataArr = data ? JSON.parse(data) : [];
 
-  // We will then re-display the content as an array for later use.
-  console.log(dataArr);
+        // We will then re-display the content as an array for later use.
+        console.log(dataArr);
 
-});
+    });
 
     //play with cloze cards
     if (count < clozeDeck.length) {
